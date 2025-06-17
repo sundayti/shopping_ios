@@ -1,14 +1,14 @@
 //
-//  shopping_iosApp.swift
-//  shopping_ios
+//  shopping_kpoApp.swift
+//  shopping_kpo
 //
-//  Created by Vladislav Pankratov on 17.06.2025.
+//  Created by Tom Tim on 24.06.2025.
 //
 
 import SwiftUI
 
 @main
-struct Shopping_iOSApp: App {
+struct shopping_kpoApp: App {
     // 1) Поднимаем один экземпляр AccountsPresenter на весь App
     @StateObject private var accountVM = AccountsPresenter()
     private let interactor = AccountsInteractor()

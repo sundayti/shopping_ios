@@ -1,8 +1,8 @@
 //
 //  ContentView.swift
-//  shopping_ios
+//  shopping_kpo
 //
-//  Created by Tom Tim on 17.06.2025.
+//  Created by Tom Tim on 24.06.2025.
 //
 
 import SwiftUI
