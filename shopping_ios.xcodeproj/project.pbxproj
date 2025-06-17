@@ -11,7 +11,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		F3FF1DB22E0780DF0064059F /* shopping_ios.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = shopping_ios.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		F3FF1DB22E0780DF0064059F /* shopping_kpo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = shopping_kpo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -45,7 +45,7 @@
 		F3FF1DB32E0780DF0064059F /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				F3FF1DB22E0780DF0064059F /* shopping_ios.app */,
+				F3FF1DB22E0780DF0064059F /* shopping_kpo.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -53,9 +53,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		F3FF1DB12E0780DF0064059F /* shopping_ios */ = {
+		F3FF1DB12E0780DF0064059F /* shopping_kpo */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = F3FF1DC02E0780E10064059F /* Build configuration list for PBXNativeTarget "shopping_ios" */;
+			buildConfigurationList = F3FF1DC02E0780E10064059F /* Build configuration list for PBXNativeTarget "shopping_kpo" */;
 			buildPhases = (
 				F3FF1DAE2E0780DF0064059F /* Sources */,
 				F3FF1DAF2E0780DF0064059F /* Frameworks */,
@@ -68,12 +68,12 @@
 			fileSystemSynchronizedGroups = (
 				F3FF1DB42E0780DF0064059F /* shopping_ios */,
 			);
-			name = shopping_ios;
+			name = shopping_kpo;
 			packageProductDependencies = (
 				F3FF1E602E08BC500064059F /* Starscream */,
 			);
 			productName = shopping_ios;
-			productReference = F3FF1DB22E0780DF0064059F /* shopping_ios.app */;
+			productReference = F3FF1DB22E0780DF0064059F /* shopping_kpo.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -108,7 +108,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				F3FF1DB12E0780DF0064059F /* shopping_ios */,
+				F3FF1DB12E0780DF0064059F /* shopping_kpo */,
 			);
 		};
 /* End PBXProject section */
@@ -270,6 +270,7 @@
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 16.6;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -300,6 +301,7 @@
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 16.6;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -325,7 +327,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		F3FF1DC02E0780E10064059F /* Build configuration list for PBXNativeTarget "shopping_ios" */ = {
+		F3FF1DC02E0780E10064059F /* Build configuration list for PBXNativeTarget "shopping_kpo" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				F3FF1DC12E0780E10064059F /* Debug */,
