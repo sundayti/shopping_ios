@@ -17,6 +17,7 @@ final class OrderDetailInteractor: OrderDetailInteractable {
     private let network = NetworkService.shared
     private var wsTask: URLSessionWebSocketTask?
     var presenter: OrderDetailPresentable?
+    private let webSocketBase = "wss://sundayti.ru/kpo_3"
 
     func fetchStatus(orderId: UUID) {
         network.request(
@@ -35,7 +36,8 @@ final class OrderDetailInteractor: OrderDetailInteractable {
     }
 
     func subscribeStatusUpdates(orderId: UUID) {
-        guard let url = URL(string: "\(Bundle.main.object(forInfoDictionaryKey: "WS_BASE_URL")!)orders/status/\(orderId.uuidString)/ws") else {
+        let urlString = "\(webSocketBase)/orders/status/\(orderId.uuidString)/ws"
+        guard let url = URL(string: urlString) else {
             presenter?.didReceiveUpdate(.failure(.invalidURL))
             return
         }
@@ -46,15 +48,24 @@ final class OrderDetailInteractor: OrderDetailInteractable {
 
     private func listen() {
         wsTask?.receive { [weak self] result in
+            guard let self = self else { return }
+
             switch result {
             case .success(.string(let text)):
                 if let data = text.data(using: .utf8),
                    let resp = try? JSONDecoder().decode(OrderStatusResponse.self, from: data) {
-                    self?.presenter?.didReceiveUpdate(.success(resp.status))
+                    self.presenter?.didReceiveUpdate(.success(resp.status))
                 }
-                self?.listen()
-            case .success, .failure(let err):
-                self?.presenter?.didReceiveUpdate(.failure(.unknown(message: err.localizedDescription)))
+                self.listen()
+
+            case .success(.data):
+                self.listen()
+
+            case .failure(let error):
+                self.presenter?.didReceiveUpdate(.failure(.unknown(message: error.localizedDescription)))
+
+            @unknown default:
+                break
             }
         }
     }

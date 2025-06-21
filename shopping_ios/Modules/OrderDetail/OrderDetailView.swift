@@ -8,15 +8,17 @@
 import SwiftUI
 
 struct OrderDetailView: View {
-    @StateObject private var presenter = OrderDetailPresenter()
+    @StateObject private var presenter: OrderDetailPresenter
     private let interactor: OrderDetailInteractable
     private let order: Order
 
     init(order: Order) {
         self.order = order
-        let inter = OrderDetailInteractor()
-        inter.presenter = presenter
-        self.interactor = inter
+        let presenter = OrderDetailPresenter()
+        let interactor = OrderDetailInteractor()
+        interactor.presenter = presenter
+        _presenter = StateObject(wrappedValue: presenter)
+        self.interactor = interactor
     }
 
     var body: some View {

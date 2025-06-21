@@ -8,15 +8,17 @@
 import SwiftUI
 
 struct OrdersListView: View {
-    @StateObject private var presenter = OrdersListPresenter()
+    @StateObject private var presenter: OrdersListPresenter
     private let interactor: OrdersListInteractable
-    private let accountId: UUID
+    let accountId: UUID
 
     init(accountId: UUID) {
         self.accountId = accountId
-        let inter = OrdersListInteractor()
-        inter.presenter = presenter
-        self.interactor = inter
+        let presenter = OrdersListPresenter()
+        let interactor = OrdersListInteractor()
+        interactor.presenter = presenter
+        _presenter = StateObject(wrappedValue: presenter)
+        self.interactor = interactor
     }
 
     var body: some View {
@@ -33,7 +35,7 @@ struct OrdersListView: View {
                             VStack(alignment: .leading, spacing: 4) {
                                 Text(order.description)
                                     .font(.headline)
-                                Text("Amount: \(order.amount.description)")
+                                Text("Amount: \(order.amount)")
                                     .font(.subheadline)
                                 Text(order.status.rawValue)
                                     .font(.caption)
