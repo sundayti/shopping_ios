@@ -8,28 +8,26 @@
 import SwiftUI
 
 struct AccountsView: View {
-    @StateObject private var presenter: AccountsPresenter
+    @EnvironmentObject private var accountVM: AccountsPresenter
     private let interactor: AccountsInteractable
-
     init() {
         let presenter = AccountsPresenter()
         let interactor = AccountsInteractor()
         interactor.presenter = presenter
-        _presenter = StateObject(wrappedValue: presenter)
         self.interactor = interactor
     }
 
     var body: some View {
         NavigationView {
             VStack(spacing: 16) {
-                if let error = presenter.errorMessage {
+                if let error = accountVM.errorMessage {
                     Text(error)
                         .foregroundColor(.red)
                 }
 
-                if !presenter.accounts.isEmpty {
-                    Picker("Account", selection: $presenter.selectedAccount) {
-                        ForEach(presenter.accounts, id: \UUID.self) { id in
+                if !accountVM.accounts.isEmpty {
+                    Picker("Account", selection: $accountVM.selectedAccount) {
+                        ForEach(accountVM.accounts, id: \.self) { id in
                             Text(id.uuidString.prefix(8) + "...")
                                 .tag(Optional(id))
                         }
@@ -40,24 +38,27 @@ struct AccountsView: View {
                         .foregroundColor(.gray)
                 }
 
-                Button(action: {
+                Button("Create New Account") {
                     interactor.createAccount()
-                }) {
-                    Text("Create New Account")
-                        .padding(.horizontal, 24)
-                        .padding(.vertical, 12)
-                        .background(Color.blue)
-                        .foregroundColor(.white)
-                        .cornerRadius(8)
                 }
+                .padding(.horizontal, 24)
+                .padding(.vertical, 12)
+                .background(Color.blue)
+                .foregroundColor(.white)
+                .cornerRadius(8)
+
+                Button("Очистить все кроме текущего") {
+                    guard let current = accountVM.selectedAccount else { return }
+                    AccountManager.shared.clearExcept(current)
+                    interactor.createAccount()
+                }
+                .padding(.top, 16)
+                .foregroundColor(.red)
 
                 Spacer()
             }
             .padding()
             .navigationTitle("Accounts")
-            .onAppear {
-                interactor.fetchAccounts()
-            }
         }
     }
 }

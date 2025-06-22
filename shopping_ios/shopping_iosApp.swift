@@ -8,45 +8,47 @@
 import SwiftUI
 
 @main
-struct shopping_iosApp: App {
+struct Shopping_iOSApp: App {
+    // 1) Поднимаем один экземпляр AccountsPresenter на весь App
     @StateObject private var accountVM = AccountsPresenter()
-
-    init() {
-        // При старте фетчим существующие аккаунты
-        let inter = AccountsInteractor()
-        inter.presenter = accountVM
-        inter.fetchAccounts()
-    }
+    private let interactor = AccountsInteractor()
 
     var body: some Scene {
         WindowGroup {
-            if let current = accountVM.selectedAccount {
-                MainTabView(currentAccount: current)
-                    .environmentObject(accountVM)
-            } else {
-                AccountsView()
+            Group {
+                // 2) Если аккаунт уже есть — сразу показываем табы
+                if accountVM.selectedAccount != nil {
+                    MainTabView()
+                }
+                // 3) Иначе — индикатор и инициализация
+                else {
+                    VStack {
+                        ProgressView("Initializing…")
+                    }
+                    .onAppear {
+                        interactor.presenter = accountVM
+                        interactor.fetchAccounts()
+                    }
+                }
             }
+            // 4) Прокидываем accountVM в иерархию
+            .environmentObject(accountVM)
         }
     }
 }
 
 struct MainTabView: View {
-    let currentAccount: UUID
-    @EnvironmentObject var accountVM: AccountsPresenter
+    // 5) Забираем его через EnvironmentObject
+    @EnvironmentObject private var accountVM: AccountsPresenter
 
     var body: some View {
-        TabView(selection: $accountVM.selectedAccount) {
+        TabView {
+            OrdersListView()
+                .tabItem { Label("Orders",   systemImage: "list.bullet") }
+            BalanceView()
+                .tabItem { Label("Balance",  systemImage: "creditcard") }
             AccountsView()
                 .tabItem { Label("Accounts", systemImage: "person.circle") }
-                .tag(accountVM.selectedAccount)
-
-            OrdersListView(accountId: currentAccount)
-                .tabItem { Label("Orders", systemImage: "list.bullet") }
-                .tag(currentAccount)
-
-            BalanceView(userId: currentAccount)
-                .tabItem { Label("Balance", systemImage: "creditcard") }
-                .tag(currentAccount)
         }
     }
 }

@@ -12,9 +12,13 @@ final class AccountsInteractor: AccountsInteractable {
     weak var presenter: AccountsPresentable?
 
     func fetchAccounts() {
-        // Берём из UserDefaults сохраняемые аккаунты
         let ids = AccountManager.shared.accounts
         presenter?.didFetchAccounts(.success(ids))
+        // если в памяти ещё нет ни одного – создаём первый
+        guard !ids.isEmpty else {
+            createAccount()
+            return
+        }
     }
 
     func createAccount() {

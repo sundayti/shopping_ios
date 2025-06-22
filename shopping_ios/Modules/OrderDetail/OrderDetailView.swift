@@ -40,7 +40,6 @@ struct OrderDetailView: View {
         .padding()
         .navigationTitle("Order Details")
         .onAppear {
-            interactor.fetchStatus(orderId: order.id)
             interactor.subscribeStatusUpdates(orderId: order.id)
         }
         .onDisappear {

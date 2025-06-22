@@ -24,7 +24,7 @@ final class NetworkService: NetworkServiceProtocol {
     private let baseURL: String
 
     private init() {
-        self.baseURL = "http://sundayti.ru/kpo_3"
+        self.baseURL = "http://sundayti.ru/kpo_3/"
     }
 
     private func prepareRequest(

@@ -8,35 +8,24 @@
 import SwiftUI
 
 struct OrdersListView: View {
-    @StateObject private var presenter: OrdersListPresenter
-    private let interactor: OrdersListInteractable
-    let accountId: UUID
-
-    init(accountId: UUID) {
-        self.accountId = accountId
-        let presenter = OrdersListPresenter()
-        let interactor = OrdersListInteractor()
-        interactor.presenter = presenter
-        _presenter = StateObject(wrappedValue: presenter)
-        self.interactor = interactor
-    }
-
+    @EnvironmentObject private var accountVM: AccountsPresenter
+    @StateObject private var presenter = OrdersListPresenter()
+    private let interactor = OrdersListInteractor()
+    
     var body: some View {
         NavigationView {
             Group {
                 if let error = presenter.errorMessage {
-                    Text(error)
-                        .foregroundColor(.red)
+                    Text(error).foregroundColor(.red)
+                } else if presenter.orders.isEmpty {
+                    Text("No orders yet")
+                        .foregroundColor(.secondary)
                 } else {
                     List(presenter.orders) { order in
-                        NavigationLink(
-                            destination: OrderDetailView(order: order)
-                        ) {
+                        NavigationLink(destination: OrderDetailView(order: order)) {
                             VStack(alignment: .leading, spacing: 4) {
-                                Text(order.description)
-                                    .font(.headline)
-                                Text("Amount: \(order.amount)")
-                                    .font(.subheadline)
+                                Text(order.description).font(.headline)
+                                Text("Amount: \(order.amount)").font(.subheadline)
                                 Text(order.status.rawValue)
                                     .font(.caption)
                                     .foregroundColor(color(for: order.status))
@@ -46,17 +35,36 @@ struct OrdersListView: View {
                 }
             }
             .navigationTitle("Orders")
-            .onAppear {
-                interactor.fetchOrders(for: accountId)
+            .toolbar {
+                ToolbarItem(placement: .navigationBarTrailing) {
+                    NavigationLink {
+                        CreateOrderView()
+                            .environmentObject(accountVM)
+                    } label: {
+                        Image(systemName: "plus")
+                    }
+                }
+            }
+            .task(id: accountVM.selectedAccount) {
+                fetchOrders()
+            }
+            .onReceive(NotificationCenter.default.publisher(for: .orderCreated)) { _ in
+                fetchOrders()
             }
         }
     }
-
+    
+    private func fetchOrders() {
+        guard let id = accountVM.selectedAccount else { return }
+        interactor.presenter = presenter
+        interactor.fetchOrders(for: id)
+    }
+    
     private func color(for status: OrderStatus) -> Color {
         switch status {
-        case .New: return .orange
+        case .New:      return .orange
         case .Finished: return .green
-        case .Cancelled: return .red
+        case .Cancelled:return .red
         }
     }
 }

@@ -2,7 +2,7 @@
 //  ContentView.swift
 //  shopping_ios
 //
-//  Created by Vladislav Pankratov on 17.06.2025.
+//  Created by Tom Tim on 17.06.2025.
 //
 
 import SwiftUI
