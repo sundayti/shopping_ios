@@ -17,7 +17,6 @@ final class AccountsPresenter: ObservableObject, AccountsPresentable {
         switch result {
         case .success(let ids):
             accounts = ids
-            // если есть хотя бы один, устанавливаем его
             if selectedAccount == nil, let first = ids.first {
                 selectedAccount = first
             }
@@ -30,7 +29,6 @@ final class AccountsPresenter: ObservableObject, AccountsPresentable {
         switch result {
         case .success(let id):
             accounts.append(id)
-            // сразу переходим на только что созданный
             selectedAccount = id
         case .failure(let error):
             errorMessage = error.localizedDescription

@@ -9,13 +9,7 @@ import SwiftUI
 
 struct AccountsView: View {
     @EnvironmentObject private var accountVM: AccountsPresenter
-    private let interactor: AccountsInteractable
-    init() {
-        let presenter = AccountsPresenter()
-        let interactor = AccountsInteractor()
-        interactor.presenter = presenter
-        self.interactor = interactor
-    }
+    private let interactor = AccountsInteractor()
 
     var body: some View {
         NavigationView {
@@ -39,6 +33,7 @@ struct AccountsView: View {
                 }
 
                 Button("Create New Account") {
+                    interactor.presenter = accountVM
                     interactor.createAccount()
                 }
                 .padding(.horizontal, 24)
@@ -47,10 +42,11 @@ struct AccountsView: View {
                 .foregroundColor(.white)
                 .cornerRadius(8)
 
-                Button("Очистить все кроме текущего") {
+                Button("Удалить все кроме текущего") {
                     guard let current = accountVM.selectedAccount else { return }
                     AccountManager.shared.clearExcept(current)
-                    interactor.createAccount()
+                    interactor.presenter = accountVM
+                    interactor.fetchAccounts() // << ОБНОВЛЯЕМ!
                 }
                 .padding(.top, 16)
                 .foregroundColor(.red)
@@ -59,6 +55,10 @@ struct AccountsView: View {
             }
             .padding()
             .navigationTitle("Accounts")
+            .onAppear {
+                interactor.presenter = accountVM
+                interactor.fetchAccounts()
+            }
         }
     }
 }
